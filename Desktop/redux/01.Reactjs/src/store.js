@@ -1,4 +1,4 @@
-import {legacy_createStore as createStore, combineReducers} from "redux";
+import {legacy_createStore as createStore} from "redux";
 
 const ADD = 'ADD';
 const DELETE = 'DELETE';
@@ -30,5 +30,10 @@ const reducer = (state = [], action) => {
 };
 
 const store = createStore(reducer);
+
+export const actionCreators = {
+  addTodo,
+  deleteTodo
+};
 
 export default store;

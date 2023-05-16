@@ -1,17 +1,20 @@
 import React, {useState} from "react"; 
 import { connect } from "react-redux";
+import { actionCreators } from "../store";
+import ToDo from "../components/ToDo";
 
-function Home({toDos}) {
+function Home({toDos, addTodo}) {
   const [text, setText] = useState('');
   
   function onChange(e){
     setText(e.target.value);
-  }
+  };
   
   function onSubmit(e) {
     e.preventDefault();
     setText('');
-  }
+    addTodo(text)
+  };
 
   return (
     <>
@@ -20,7 +23,7 @@ function Home({toDos}) {
         <input type="text" value={text} onChange={onChange} />
         <button>Add</button>
       </form>
-      <ul>{JSON.stringify(toDos)}</ul>
+      <ul>{toDos.map(todo => <ToDo {...todo} key={todo.id}/>)}</ul>
     </>
   )
 }
@@ -30,4 +33,12 @@ function mapStateToProps(state){
   return {toDos: state};
 }
 
-export default connect(mapStateToProps)(Home); //connect()는 Home으로 보내는 props에 추가될 수 있도록 해준다.
+// DispatchProp
+function mapDispatchToProps(dispatch){
+  return {
+    addTodo: (text) => dispatch(actionCreators.addTodo(text))
+  }
+}
+
+//connect()는 currentState 혹은 DispatchProp에서 리턴하는 값을 Home컴포넌트에 props를 보낼수 있도록 해준다.
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
